@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administration — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #f8fafc; 
+      color: #1e293b; 
+      font-family: 'Open Sans', sans-serif; 
+      line-height: 1.6;
+    }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.6rem; font-weight: 700; color: #0d3b66; }
+    nav a { margin-left: 1.5rem; text-decoration: none; color: #475569; font-weight: 500; }
+    .auth-display { font-weight: 600; color: #0d3b66; position: relative; margin-left: 1.5rem; }
+    .dropdown-menu { position: absolute; top: 100%; right: 0; background: white; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; min-width: 200px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; }
+    .dropdown-menu a { display: block; padding: 0.85rem 1.2rem; color: #1e293b; text-decoration: none; transition: background 0.2s; }
+    .dropdown-menu a:hover { background: #f8fafc; }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    main {
+      max-width: 1400px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      color: #0d3b66;
+      margin-bottom: 1.5rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.8rem;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      color: #0d3b66;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #0d3b66, #1b998b);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 59, 102, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #cbd5e1;
+      color: #0d3b66;
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+    }
+
+    /* --- نموذج إضافة خبر --- */
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    .media-preview {
+      width: 100%;
+      height: 200px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      margin-top: 0.5rem;
+    }
+
+    /* --- قائمة الأخبار --- */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .news-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .news-thumb {
+      width: 80px;
+      height: 80px;
+      background: #0d3b66;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .news-info {
+      flex: 1;
+    }
+
+    .news-info h3 {
+      font-size: 1rem;
+      color: #0d3b66;
+      margin-bottom: 0.3rem;
+    }
+
+    .news-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .news-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* --- لوحة الإحصائيات --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: rgba(27, 153, 139, 0.08);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0d3b66;
+      margin: 0.3rem 0;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #475569;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #64748b;
+      font-size: 0.95rem;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+  <div class="logo">MDJ Jemmel</div>
+  <nav>
+    <a href="../index.html">Accueil</a>
+    <a href="admin-panel.html">Administration</a>
+    <span id="authDisplay" class="auth-display">Se connecter</span>
+  </nav>
+  </div>
+
+  <main>
+    <h1>Administration — Maison des Jeunes Jemmel</h1>
+
+    <div class="dashboard-grid">
+      <div class="main-content">
+        <!-- إضافة خبر جديد -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">Ajouter une actualité</h2>
+          </div>
+          <form id="newsForm">
+            <div class="form-group">
+              <label for="newsTitle">Titre</label>
+              <input type="text" id="newsTitle" placeholder="Ex: Lancement de Radio Jemmel" required>
+            </div>
+            <div class="form-group">
+              <label for="newsContent">Contenu</label>
+              <textarea id="newsContent" rows="4" placeholder="Décrivez l'actualité..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Photo illustrative</label>
+              <div class="media-preview">
+                📷 Cliquez pour uploader une image (JPG/PNG)
+              </div>
+              <input type="file" id="newsImage" accept="image/*" style="margin-top:0.5rem;">
+            </div>
+            <div class="form-group">
+              <label>Vidéo (optionnel)</label>
+              <div class="media-preview">
+                🎥 Collez un lien YouTube ou Vimeo
+              </div>
+              <input type="url" id="newsVideo" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <button type="submit" class="btn" style="width:100%;">Publier l'actualité</button>
+          </form>
+        </section>
+
+        <!-- إدارة التعليقات -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">Commentaires récents</h2>
+            <button class="btn btn-outline">Voir tout</button>
+          </div>
+          <div class="comments-list">
+            <div class="news-item">
+              <div class="news-thumb" style="background:#1b998b;"></div>
+              <div class="news-info">
+                <h3>Ahmed: Super initiative !</h3>
+                <div class="news-meta">
+                  <span> Posté sur: Radio Jemmel</span>
+                  <span>29 déc. 2025</span>
+                </div>
+              </div>
+              <div class="news-actions">
+                <button class="btn btn-outline">✅ Approuver</button>
+                <button class="btn btn-outline" style="color:#e11d48;">🗑️ Supprimer</button>
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-thumb" style="background:#f97316;"></div>
+              <div class="news-info">
+                <h3>Sarah: Quand la prochaine réhla ?</h3>
+                <div class="news-meta">
+                  <span> Posté sur: Réhla Carthage</span>
+                  <span>28 déc. 2025</span>
+                </div>
+              </div>
+              <div class="news-actions">
+                <button class="btn btn-outline">✅ Approuver</button>
+                <button class="btn btn-outline" style="color:#e11d48;">🗑️ Supprimer</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- إدارة الفيديوهات -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">Médias (Vidéos & Photos)</h2>
+            <button class="btn">+ Ajouter</button>
+          </div>
+          <div class="media-grid">
+            <div class="news-item">
+              <div class="news-thumb" style="background:#ef4444;"></div>
+              <div class="news-info">
+                <h3>Spectacle "Jeunesse Engagée"</h3>
+                <div class="news-meta">
+                  <span>Vidéo YouTube</span>
+                  <span>25 déc. 2025</span>
+                </div>
+              </div>
+              <div class="news-actions">
+                <button class="btn btn-outline">✏️ Modifier</button>
+                <button class="btn btn-outline" style="color:#e11d48;">🗑️ Supprimer</button>
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-thumb" style="background:#8b5cf6;"></div>
+              <div class="news-info">
+                <h3>Atelier Robotique</h3>
+                <div class="news-meta">
+                  <span>Galerie photos</span>
+                  <span>20 déc. 2025</span>
+                </div>
+              </div>
+              <div class="news-actions">
+                <button class="btn btn-outline">✏️ Modifier</button>
+                <button class="btn btn-outline" style="color:#e11d48;">🗑️ Supprimer</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="sidebar">
+        <!-- الإحصائيات السريعة -->
+        <section class="section">
+          <h2 class="section-title">Statistiques</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">127</div>
+              <div class="stat-label">Utilisateurs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">42</div>
+              <div class="stat-label">Commentaires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">8</div>
+              <div class="stat-label">Actualités</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Vidéos</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- إرسال إشعار -->
+        <section class="section">
+          <h2 class="section-title">Envoyer une notification</h2>
+          <form>
+            <div class="form-group">
+              <label for="notifTitle">Titre</label>
+              <input type="text" id="notifTitle" placeholder="Ex: Nouvelle activité" required>
+            </div>
+            <div class="form-group">
+              <label for="notifContent">Message</label>
+              <textarea id="notifContent" rows="3" placeholder="Écrivez votre message..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Type de récepteurs</label>
+              <select>
+                <option>Tous les utilisateurs</option>
+                <option>Participants actifs</option>
+                <option>Admins seulement</option>
+              </select>
+            </div>
+            <button type="submit" class="btn" style="width:100%;">Envoyer maintenant</button>
+          </form>
+        </section>
+
+        <!-- نشاط حديث -->
+        <section class="section">
+          <h2 class="section-title">Activité récente</h2>
+          <ul style="font-size:0.9rem; color:#475569;">
+            <li style="padding:0.5rem 0; border-bottom:1px solid #f1f5f9;">✅ Rami a publié un commentaire</li>
+            <li style="padding:0.5rem 0; border-bottom:1px solid #f1f5f9;">📤 Nouvelle vidéo ajoutée</li>
+            <li style="padding:0.5rem 0; border-bottom:1px solid #f1f5f9;">📌 Actualité publiée</li>
+            <li style="padding:0.5rem 0;">👤 Nouvel utilisateur inscrit</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    // حماية الصفحة: يلزم مدير مسجّل الدخول
+    document.addEventListener('DOMContentLoaded', function() {
+      const userRaw = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      
+      if (!userRaw) {
+        alert('Veuillez vous connecter pour accéder à l’administration.');
+        window.location.href = '../login.html';
+        return;
+      }
+      const user = JSON.parse(userRaw);
+      if (user.role !== 'admin') {
+        alert('Accès réservé aux administrateurs.');
+        window.location.href = '../index.html';
+        return;
+      }
+
+      // Dropdown profil + déconnexion
+      authDisplay.innerHTML = `
+        <button id="userBtn" style="background:none; border:none; font-weight:600; color:#0d3b66; cursor:pointer; display:flex; align-items:center; gap:0.5rem;">
+          <span>${user.name}</span>
+          <span>⚙️</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div id="userMenu" class="dropdown-menu">
+          <a href="../profile.html">👤 Mon profil</a>
+          <a href="#" id="logoutBtn">🚪 Déconnexion</a>
+        </div>
+      `;
+
+      document.getElementById('userBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('userMenu').classList.toggle('show');
+      });
+      document.addEventListener('click', function(e) {
+        const menu = document.getElementById('userMenu');
+        if (menu && !menu.contains(e.target) && e.target.id !== 'userBtn') {
+          menu.classList.remove('show');
+        }
+      });
+      document.getElementById('logoutBtn').onclick = function(e) {
+        e.preventDefault();
+        localStorage.removeItem('currentUser');
+        alert('✅ Déconnexion réussie');
+        window.location.href = '../index.html';
+      };
+    });
+
+    // إضافة خبر جديد
+    document.getElementById('newsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('newsTitle').value;
+      if (title) {
+        alert(`✅ Actualité "${title}" publiée avec succès !\nElle apparaîtra sur la page d'accueil.`);
+        this.reset();
+      }
+    });
+
+    // أنيميشن بسيط
+    document.addEventListener('DOMContentLoaded', () => {
+      const elements = document.querySelectorAll('.section');
+      elements.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          el.style.transition = 'opacity 0.6s, transform 0.6s';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 300 + i * 200);
+      });
+    });
+  </script>
+</body>
+</html>

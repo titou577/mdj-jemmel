@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activités — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0d3b66; --secondary: #1b998b; --light: #f8fafc; --gray: #475569; --light-gray: #e2e8f0; }
+    body { background: var(--light); color: var(--gray); font-family: 'Open Sans', sans-serif; }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+    
+    nav ul { display: flex; list-style: none; gap: 1.6rem; }
+    nav a { text-decoration: none; color: var(--gray); font-weight: 500; }
+    
+    .auth-display { font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+
+    .logout-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(13,59,102,0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-left: 1rem;
+    }
+    .logout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(13,59,102,0.25); }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      overflow: hidden;
+      min-width: 200px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+    }
+    
+    .dropdown-menu a {
+      display: block;
+      padding: 0.85rem 1.2rem;
+      color: #1e293b;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    
+    .dropdown-menu a:hover { background: #f8fafc; }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    
+    main { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; color: var(--primary); margin-bottom: 2rem; text-align: center; }
+    
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    
+    .activity-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .admin-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: none;
+    }
+    
+    .admin-actions.active { display: block; }
+    
+    .action-btn {
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-left: 0.3rem;
+    }
+    
+    .edit { background: #dbeafe; color: #1d4ed8; }
+    .edit:hover { background: #bfdbfe; }
+    .delete { background: #fee2e2; color: #dc2626; }
+    .delete:hover { background: #fecaca; }
+    
+    .activity-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(13, 59, 102, 0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1.4rem;
+    }
+    
+    .activity-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .activity-card p {
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #0d3b66;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.09;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ensure content sits above watermark */
+    .header-bar, main, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">
+          <span>Se connecter</span>
+        </li>
+      </ul>
+    </nav>
+    <button id="logoutMainBtn" class="logout-btn" style="display:none;">Se déconnecter</button>
+  </div>
+
+  <main>
+    <h1>Nos activités</h1>
+    
+    <button id="addActivityBtn" class="action-btn edit" style="display:none; margin-bottom:1.5rem;">+ Ajouter une activité</button>
+    
+    <div class="activities-grid">
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">💻</div>
+        <h3>Informatique</h3>
+        <p>Initiation à la programmation, développement web, cybersécurité et robotique logicielle.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🤖</div>
+        <h3>Robotique</h3>
+        <p>Conception, montage et programmation de robots éducatifs (Arduino, LEGO Mindstorms).</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🎮</div>
+        <h3>Gaming</h3>
+        <p>Tournois locaux, sensibilisation aux addictions, et initiation à la création de jeux simples.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">📡</div>
+        <h3>Médias</h3>
+        <p>Radio en direct, émissions TV, podcasts, et formation au journalisme citoyen.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🎵</div>
+        <h3>Musique</h3>
+        <p>Ateliers de chant, initiation aux instruments, production musicale et concerts locaux.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🎨</div>
+        <h3>Dessin</h3>
+        <p>Arts plastiques, graffiti, design graphique, et expositions collectives.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🎭</div>
+        <h3>Théâtre</h3>
+        <p>Ateliers d’improvisation, écriture dramatique, et représentations publiques régionales.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">⚽</div>
+        <h3>Sports</h3>
+        <p>Football, tennis de table, gymnastique, et activités physiques adaptées.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">💃</div>
+        <h3>Danse</h3>
+        <p>Danse moderne, traditionnelle tunisienne, et chorégraphies collectives.</p>
+      </div>
+      
+      <div class="activity-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="activity-icon">🚌</div>
+        <h3>Réhlas</h3>
+        <p>Voyages culturels, sorties éducatives, visites de sites historiques et camps de vacances.</p>
+      </div>
+    </div>
+    <!-- Médias des activités -->
+    <div class="section-header" style="margin-top:2.5rem;">
+      <h1>Médias des activités</h1>
+      <button id="uploadActivityMediaBtn" class="action-btn edit" style="display:none;">+ Ajouter média</button>
+    </div>
+    <div id="activitiesMediaContainer" class="news-grid"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      if (user) {
+        const logoutMainBtn = document.getElementById('logoutMainBtn');
+        if (logoutMainBtn) {
+          logoutMainBtn.style.display = 'inline-block';
+          logoutMainBtn.addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          });
+        }
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      const addBtn = document.getElementById('addActivityBtn');
+      
+      if (user) {
+        const userData = JSON.parse(user);
+        authDisplay.innerHTML = `
+          <button id="userBtn" style="background:none; border:none; font-weight:600; color:#0d3b66; cursor:pointer; display:flex; align-items:center; gap:0.5rem;">
+            <span>${userData.name}</span>
+            ${userData.role === 'admin' ? '<span>⚙️</span>' : ''}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div id="userMenu" class="dropdown-menu">
+            <a href="profile.html">👤 Mon profil</a>
+            <a href="#" id="logoutBtn">🚪 Déconnexion</a>
+          </div>
+        `;
+        
+        // فتح/إغلاق القائمة
+        document.getElementById('userBtn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.getElementById('userMenu').classList.toggle('show');
+        });
+        
+        // إغلاق عند الضغط خارج
+        document.addEventListener('click', function(e) {
+          const menu = document.getElementById('userMenu');
+          if (!menu.contains(e.target) && e.target.id !== 'userBtn') {
+            menu.classList.remove('show');
+          }
+        });
+        
+        // إظهار أدوات المدير
+        if (userData.role === 'admin') {
+          addBtn.style.display = 'inline-block';
+          document.querySelectorAll('.admin-actions').forEach(el => {
+            el.style.display = 'block';
+          });
+        }
+        
+        // خروج
+        document.getElementById('logoutBtn').onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('currentUser');
+          alert('✅ Déconnexion réussie');
+          window.location.reload();
+        };
+      }
+      
+      // حذف نشاط
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete')) {
+          if (confirm('Supprimer cette activité ?')) {
+            e.target.closest('.activity-card').remove();
+            alert('✅ Activité supprimée');
+          }
+        }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const uploadBtn = document.getElementById('uploadActivityMediaBtn');
+      const mediaContainer = document.getElementById('activitiesMediaContainer');
+
+      if (user && user.role === 'admin') {
+        uploadBtn.style.display = 'inline-block';
+      }
+
+      function getMedia() {
+        return JSON.parse(localStorage.getItem('activitiesMedia') || '[]');
+      }
+      function saveMedia(list) {
+        localStorage.setItem('activitiesMedia', JSON.stringify(list));
+      }
+      function renderMedia() {
+        if (!mediaContainer) return;
+        mediaContainer.innerHTML = '';
+        getMedia().forEach(m => {
+          const card = document.createElement('div');
+          card.className = 'news-card';
+          card.innerHTML = `
+            <div class="admin-actions" style="${user.role==='admin'?'display:block':''}">
+              <button class="action-btn edit" data-act-edit="${m.id}">✏️</button>
+              <button class="action-btn delete" data-act-del="${m.id}">🗑️</button>
+            </div>
+            <div class="news-content">
+              <h3>${m.title}</h3>
+              ${m.url ? `${m.url.match(/\.mp4|\.webm|\.ogg/i) ? `<video src='${m.url}' controls style='width:100%; border-radius:8px;'></video>` : `<img src='${m.url}' alt='media' style='width:100%; border-radius:8px;'/>`}` : ''}
+            </div>`;
+          mediaContainer.appendChild(card);
+        });
+      }
+      renderMedia();
+
+      uploadBtn && uploadBtn.addEventListener('click', function() {
+        const title = prompt('Titre du média:');
+        if (!title) return;
+        const url = prompt('Lien du média (image/vidéo):');
+        const list = getMedia();
+        const id = 'actm_' + Date.now();
+        list.push({ id, title, url });
+        saveMedia(list);
+        renderMedia();
+        alert('✅ Média ajouté');
+      });
+
+      document.addEventListener('click', function(e) {
+        const delId = e.target.getAttribute('data-act-del');
+        if (delId) {
+          if (confirm('Supprimer ce média ?')) {
+            const list = getMedia().filter(x => x.id !== delId);
+            saveMedia(list);
+            renderMedia();
+            alert('✅ Média supprimé');
+          }
+        }
+        const editId = e.target.getAttribute('data-act-edit');
+        if (editId) {
+          const list = getMedia();
+          const item = list.find(x => x.id === editId);
+          if (!item) return;
+          const title = prompt('Titre', item.title);
+          const url = prompt('Lien du média', item.url || '');
+          Object.assign(item, { title, url });
+          saveMedia(list);
+          renderMedia();
+          alert('✅ Média modifié');
+        }
+      });
+    });
+  </script>
+  </body>
+</html>

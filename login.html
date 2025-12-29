@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inscription — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f8fafc, #eef2f7);
+      color: #1e293b;
+      font-family: 'Open Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .logo-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #0d3b66;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    .container {
+      display: flex;
+      gap: 2rem;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+      flex: 1;
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .card-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      color: #0d3b66;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .oauth-section {
+      margin-bottom: 1.8rem;
+    }
+
+    .oauth-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0.6rem 0;
+      transition: all 0.3s;
+      border: 1px solid #cbd5e1;
+    }
+
+    .google { background: white; color: #333; }
+    .google:hover { background: #f8f9fa; }
+
+    .facebook { background: #3b5998; color: white; }
+    .facebook:hover { background: #344e86; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .divider span {
+      padding: 0 1rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #0d3b66;
+      box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.1);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, #0d3b66, #1b998b);
+      color: white;
+      padding: 0.95rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 59, 102, 0.25);
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 2rem 0 1rem;
+      color: #0d3b66;
+      font-size: 1.05rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.09;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ensure content sits above watermark */
+    .logo-header, .container, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="logo-header">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+  </div>
+
+  <div class="container">
+    <!-- نموذج المستخدم -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Jeune participant</h2>
+        <p>Créez votre compte en 2 minutes</p>
+      </div>
+
+      <div class="oauth-section">
+        <button class="oauth-btn google" onclick="loginSocial('Mohamed', 'user')">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continuer avec Google
+        </button>
+        
+        <button class="oauth-btn facebook" onclick="loginSocial('Sarah', 'user')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.662H7.562V12h2.876V9.5c0-2.835 1.697-4.392 4.23-4.392 1.218 0 2.262.09 2.542.129v2.95h-1.77c-1.392 0-1.667.654-1.667 1.616V12h2.834l-.37 2.786H12.34V22C16.983 21.25 22 17.018 22 12z"/>
+          </svg>
+          Continuer avec Facebook
+        </button>
+      </div>
+
+      <div class="divider">
+        <span>ou</span>
+      </div>
+
+      <form id="userForm">
+        <div class="row">
+          <div class="form-group">
+            <label for="firstName">Prénom</label>
+            <input type="text" id="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Nom</label>
+            <input type="text" id="lastName" required>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="dob">Date de naissance</label>
+            <input type="date" id="dob" required>
+          </div>
+          <div class="form-group">
+            <label for="wilaya">Wilaya</label>
+            <select id="wilaya" required>
+              <option value="">Sélectionner</option>
+              <option>Ariana</option>
+              <option>Béja</option>
+              <option>Ben Arous</option>
+              <option>Bizerte</option>
+              <option>Gabès</option>
+              <option>Gafsa</option>
+              <option>Jendouba</option>
+              <option>Kairouan</option>
+              <option>Kasserine</option>
+              <option>Kebili</option>
+              <option>Kef</option>
+              <option>Mahdia</option>
+              <option>Manouba</option>
+              <option>Medenine</option>
+              <option>Monastir</option>
+              <option>Nabeul</option>
+              <option>Sfax</option>
+              <option>Sidi Bouzid</option>
+              <option>Siliana</option>
+              <option>Sousse</option>
+              <option>Tataouine</option>
+              <option>Tozeur</option>
+              <option>Tunis</option>
+              <option>Zaghouan</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Adresse complète</label>
+          <textarea id="address" rows="2" placeholder="Rue, ville, code postal" required></textarea>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="tel" id="phone" placeholder="+216 XX XXX XXX">
+          </div>
+          <div class="form-group">
+            <label for="school">Établissement</label>
+            <input type="text" id="school" placeholder="Lycée, collège...">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" required>
+        </div>
+        
+        <button type="submit" class="btn">Créer mon compte</button>
+      </form>
+    </div>
+
+    <!-- نموذج المدير -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Accès administrateur</h2>
+        <p>Réservé au personnel autorisé</p>
+      </div>
+
+      <form id="adminForm">
+        <div class="form-group">
+          <label for="adminName">Nom complet</label>
+          <input type="text" id="adminName" placeholder="Ex: Mohamed Ali" required>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="cin">CIN</label>
+            <input type="text" id="cin" placeholder="12345678" required>
+          </div>
+          <div class="form-group">
+            <label for="poste">Poste</label>
+            <select id="poste" required>
+              <option value="">Sélectionner</option>
+              <option>Directeur</option>
+              <option>Enseignant</option>
+              <option>Remplaçant directeur</option>
+              <option>Secrétaire</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="adminCode">Code secret</label>
+          <input type="password" id="adminCode" placeholder="Ex: ..........." required>
+        </div>
+        
+        <button type="submit" class="btn" style="background:linear-gradient(135deg, #1b998b, #0d3b66);">
+          Accéder à l'administration
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    // دخول عبر Google/Facebook
+    function loginSocial(name, role) {
+      saveUserAndRedirect(name, role, undefined);
+    }
+
+    // حفظ المستخدم وتحويل لـ index.html
+    function saveUserAndRedirect(name, role, password) {
+      const user = {
+        name: name,
+        role: role,
+        avatar: name.charAt(0),
+        joinedAt: new Date().toLocaleDateString()
+      };
+      if (password) {
+        user.password = password;
+      }
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      alert(`✅ Bienvenue, ${name} !\nRedirection vers l'accueil...`);
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1000);
+    }
+
+    // نموذج المستخدم العادي
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const password = document.getElementById('password').value;
+      saveUserAndRedirect(`${firstName} ${lastName}`, 'user', password);
+    });
+
+    // نموذج المدير
+    document.getElementById('adminForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('adminName').value;
+      const code = document.getElementById('adminCode').value;
+      
+      if (code === 'MDJ-ADMIN-2026') {
+        // المدير ما عندوش كلمة سر في الفورما، ينجم يحدّدها بعد الدخول من صفحة البروفيل
+        saveUserAndRedirect(name, 'admin', undefined);
+      } else {
+        alert('❌ Code secret incorrect');
+      }
+    });
+  </script>
+</body>
+</html>

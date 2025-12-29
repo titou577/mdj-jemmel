@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Actualités — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0d3b66; --secondary: #1b998b; --light: #f8fafc; --gray: #475569; --light-gray: #e2e8f0; }
+    body { background: var(--light); color: var(--gray); font-family: 'Open Sans', sans-serif; line-height: 1.6; }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+    
+    nav ul { display: flex; list-style: none; gap: 1.6rem; }
+    nav a { text-decoration: none; color: var(--gray); font-weight: 500; }
+    
+    .auth-display { font-weight: 600; color: var(--primary); }
+
+    .logout-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(13,59,102,0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-left: 1rem;
+      display: none;
+    }
+    .logout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(13,59,102,0.25); }
+    
+    main { max-width: 1000px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.4rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    #addNewsBtn {
+      display: none;
+    }
+    
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+    
+    .news-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+      position: relative;
+    }
+    
+    .admin-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: none;
+    }
+    
+    .admin-actions.active { display: block; }
+    
+    .action-btn {
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-left: 0.3rem;
+    }
+    
+    .edit { background: #dbeafe; color: #1d4ed8; }
+    .delete { background: #fee2e2; color: #dc2626; }
+    
+    .news-content {
+      padding: 1.8rem;
+    }
+    
+    .news-date {
+      display: inline-block;
+      background: rgba(13, 59, 102, 0.08);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    
+    .news-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .news-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    
+    .author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #0d3b66;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.09;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Ensure content sits above watermark */
+    .header-bar, main, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">Se connecter</li>
+      </ul>
+    </nav>
+    <button id="logoutMainBtn" class="logout-btn">Se déconnecter</button>
+  </div>
+
+  <main>
+    <div class="section-header">
+      <h1>Actualités</h1>
+      <button id="addNewsBtn" class="action-btn edit">+ Ajouter</button>
+    </div>
+
+    <div id="newsContainer" class="news-grid">
+      <div class="news-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="news-content">
+          <span class="news-date">29 déc. 2025</span>
+          <h3>Lancement de "Radio Jemmel"</h3>
+          <p>Notre radio jeunesse démarre ses émissions hebdomadaires, avec une programmation 100% produite par les jeunes.</p>
+          <div class="news-author">
+            <div class="author-avatar">MA</div>
+            <div>
+              <strong>Mohamed Ali</strong> • Directeur
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="news-content">
+          <span class="news-date">25 déc. 2025</span>
+          <h3>Festival régional de théâtre</h3>
+          <p>Notre troupe de théâtre remporte le prix du meilleur spectacle au festival de Sousse.</p>
+          <div class="news-author">
+            <div class="author-avatar">SB</div>
+            <div>
+              <strong>Sarah Ben Salah</strong> • Enseignante
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="admin-actions">
+          <button class="action-btn edit">✏️</button>
+          <button class="action-btn delete">🗑️</button>
+        </div>
+        <div class="news-content">
+          <span class="news-date">20 déc. 2025</span>
+          <h3>Atelier robotique avancé</h3>
+          <p>Les jeunes ont programmé des robots capables de trier les déchets — projet présenté au salon de l'innovation.</p>
+          <div class="news-author">
+            <div class="author-avatar">RB</div>
+            <div>
+              <strong>Rami Boubaker</strong> • Responsable activités
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Événements -->
+    <div class="section-header" style="margin-top:2.5rem;">
+      <h1>Événements</h1>
+      <button id="addEventBtn" class="action-btn edit" style="display:none;">+ Créer un événement</button>
+    </div>
+    <div id="eventsContainer" class="news-grid"></div>
+    
+    <!-- Modale participation -->
+    <div id="eventModal" style="position:fixed; inset:0; background:rgba(0,0,0,0.35); display:none; align-items:center; justify-content:center; z-index:2000;">
+      <div style="background:white; border-radius:12px; padding:1.5rem; width:90%; max-width:560px;">
+        <h3 style="font-family:'Montserrat', sans-serif; color:#0d3b66; margin-bottom:1rem;">Participer à l’événement</h3>
+        <form id="participationForm">
+          <input type="hidden" id="eventId">
+          <div class="form-group">
+            <label for="participantName">Nom complet</label>
+            <input type="text" id="participantName" required>
+          </div>
+          <div class="form-group">
+            <label for="participantEmail">E-mail</label>
+            <input type="email" id="participantEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="participantPhone">Téléphone</label>
+            <input type="tel" id="participantPhone">
+          </div>
+          <div style="display:flex; gap:0.5rem; margin-top:0.8rem;">
+            <button type="submit" class="action-btn edit" style="flex:1;">Confirmer</button>
+            <button type="button" id="closeModal" class="action-btn delete" style="flex:1;">Annuler</button>
+          </div>
+        </form>
+        <div id="confirmationLetter" style="display:none; margin-top:1rem; border-top:1px solid #f1f5f9; padding-top:1rem;">
+          <p id="letterContent" style="white-space:pre-line; color:#1e293b;"></p>
+          <button id="printLetter" class="action-btn edit" style="margin-top:0.6rem;">Imprimer la confirmation</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      const logoutMainBtn = document.getElementById('logoutMainBtn');
+      const addBtn = document.getElementById('addNewsBtn');
+      const newsContainer = document.getElementById('newsContainer');
+      const addEventBtn = document.getElementById('addEventBtn');
+      const eventsContainer = document.getElementById('eventsContainer');
+      const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://127.0.0.1:5501' : '';
+      
+      if (user) {
+        const userData = JSON.parse(user);
+        authDisplay.innerHTML = `<span>${userData.name}</span>${userData.role === 'admin' ? ' ⚙️' : ''}`;
+        
+        // إظهار أدوات المدير
+        if (userData.role === 'admin') {
+          addBtn.style.display = 'inline-block';
+          document.querySelectorAll('.admin-actions').forEach(el => {
+            el.style.display = 'block';
+          });
+          addEventBtn.style.display = 'inline-block';
+        }
+        if (logoutMainBtn) {
+          logoutMainBtn.style.display = 'inline-block';
+          logoutMainBtn.onclick = function() {
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          };
+        }
+      }
+      
+      // حذف خبر
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete')) {
+          if (confirm('Voulez-vous supprimer cette actualité ?')) {
+            e.target.closest('.news-card').remove();
+            alert('✅ Actualité supprimée');
+          }
+        }
+      });
+
+      // ------ Gestion des actualités (avec média) ------
+      function getNews() {
+        return JSON.parse(localStorage.getItem('news') || '[]');
+      }
+      function saveNews(list) {
+        localStorage.setItem('news', JSON.stringify(list));
+      }
+      async function renderNews(apiList) {
+        if (!newsContainer) return;
+        let list = apiList;
+        if (!Array.isArray(list)) {
+          // Try API first
+          try {
+            const resp = await fetch((API_BASE ? `${API_BASE}/api/news` : '/api/news'));
+            if (resp.ok) {
+              list = await resp.json();
+            }
+          } catch (_) {}
+        }
+        // Fallback to localStorage
+        if (!Array.isArray(list) || list.length === 0) {
+          list = getNews();
+        }
+        newsContainer.innerHTML = '';
+        list.forEach(n => {
+          const card = document.createElement('div');
+          card.className = 'news-card';
+          card.innerHTML = `
+            <div class="admin-actions" style="${(JSON.parse(localStorage.getItem('currentUser')||'{}').role==='admin')?'display:block':''}">
+              ${n.id ? `<button class="action-btn edit" data-news-edit="${n.id}">✏️</button><button class="action-btn delete" data-news-del="${n.id}">🗑️</button>` : ''}
+            </div>
+            <div class="news-content">
+              <span class="news-date">${n.date || ''}</span>
+              <h3>${n.title}</h3>
+              <p>${n.content || ''}</p>
+              ${n.mediaUrl ? `<div style='margin-top:0.6rem;'>${n.mediaUrl.match(/\.mp4|\.webm|\.ogg/i) ? `<video src='${n.mediaUrl}' controls style='width:100%; border-radius:8px;'></video>` : `<img src='${n.mediaUrl}' alt='media' style='width:100%; border-radius:8px;'/>`}</div>` : ''}
+            </div>`;
+          newsContainer.appendChild(card);
+        });
+      }
+      renderNews();
+
+      addBtn && addBtn.addEventListener('click', function() {
+        const title = prompt('Titre de la news:');
+        if (!title) return;
+        const date = prompt('Date (ex: 29 déc. 2025):');
+        const content = prompt('Contenu court:');
+        const mediaUrl = prompt('Lien média (image/vidéo) optionnel:');
+        const list = getNews();
+        const id = 'news_' + Date.now();
+        list.push({ id, title, date, content, mediaUrl });
+        saveNews(list);
+        renderNews();
+        alert('✅ News ajoutée');
+      });
+
+      document.addEventListener('click', function(e) {
+        const delId = e.target.getAttribute('data-news-del');
+        if (delId) {
+          if (confirm('Supprimer cette news ?')) {
+            const list = getNews().filter(x => x.id !== delId);
+            saveNews(list);
+            renderNews();
+            alert('✅ News supprimée');
+          }
+        }
+        const editId = e.target.getAttribute('data-news-edit');
+        if (editId) {
+          const list = getNews();
+          const item = list.find(x => x.id === editId);
+          if (!item) return;
+          const title = prompt('Titre', item.title);
+          if (!title) return;
+          const date = prompt('Date', item.date || '');
+          const content = prompt('Contenu', item.content || '');
+          const mediaUrl = prompt('Lien média (image/vidéo)', item.mediaUrl || '');
+          Object.assign(item, { title, date, content, mediaUrl });
+          saveNews(list);
+          renderNews();
+          alert('✅ News modifiée');
+        }
+      });
+
+      // ------ Gestion des événements ------
+      function getEvents() {
+        return JSON.parse(localStorage.getItem('events') || '[]');
+      }
+      function saveEvents(list) {
+        localStorage.setItem('events', JSON.stringify(list));
+      }
+      function renderEvents() {
+        const events = getEvents();
+        eventsContainer.innerHTML = '';
+        events.forEach(ev => {
+          const count = (JSON.parse(localStorage.getItem('eventRegistrations') || '{}')[ev.id] || []).length;
+          const card = document.createElement('div');
+          card.className = 'news-card';
+          card.innerHTML = `
+            <div class="admin-actions" style="${(JSON.parse(localStorage.getItem('currentUser')||'{}').role==='admin')?'display:block':''}">
+              <button class="action-btn edit" data-edit="${ev.id}">✏️</button>
+              <button class="action-btn delete" data-del="${ev.id}">🗑️</button>
+            </div>
+            <div class="news-content">
+              <span class="news-date">${ev.date || ''}</span>
+              <h3>${ev.title}</h3>
+              <p>${ev.description || ''}</p>
+              <p style="color:#64748b; margin-top:0.4rem;">📍 ${ev.location || '—'} • 👥 Participants: <strong>${count}</strong></p>
+              <div style="margin-top:0.8rem; display:flex; gap:0.5rem;">
+                <button class="action-btn edit" data-participate="${ev.id}">Participer</button>
+                ${ev.mediaUrl ? `<a href="${ev.mediaUrl}" target="_blank" class="action-btn edit">Voir média</a>` : ''}
+              </div>
+            </div>`;
+          eventsContainer.appendChild(card);
+        });
+      }
+      renderEvents();
+
+      // Admin: créer un événement
+      addEventBtn && addEventBtn.addEventListener('click', function() {
+        const title = prompt('Titre de l’événement:');
+        if (!title) return;
+        const date = prompt('Date (ex: 15 janv. 2026):');
+        const location = prompt('Lieu:');
+        const description = prompt('Description courte:');
+        const mediaUrl = prompt('Lien média (image/vidéo) optionnel:');
+        const events = getEvents();
+        const id = 'ev_' + Date.now();
+        events.push({ id, title, date, location, description, mediaUrl });
+        saveEvents(events);
+        renderEvents();
+        alert('✅ Événement créé');
+      });
+
+      // Admin: supprimer événement
+      document.addEventListener('click', function(e) {
+        const delId = e.target.getAttribute('data-del');
+        if (delId) {
+          if (confirm('Supprimer cet événement ?')) {
+            const events = getEvents().filter(x => x.id !== delId);
+            saveEvents(events);
+            renderEvents();
+            alert('✅ Événement supprimé');
+          }
+        }
+      });
+
+      // Participation
+      const modal = document.getElementById('eventModal');
+      const closeModal = document.getElementById('closeModal');
+      const participationForm = document.getElementById('participationForm');
+      const letter = document.getElementById('confirmationLetter');
+      const letterContent = document.getElementById('letterContent');
+      const printLetter = document.getElementById('printLetter');
+
+      document.addEventListener('click', function(e) {
+        const evId = e.target.getAttribute('data-participate');
+        if (evId) {
+          document.getElementById('eventId').value = evId;
+          // Prefill if logged in
+          const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          document.getElementById('participantName').value = u.name || '';
+          document.getElementById('participantEmail').value = u.email || '';
+          modal.style.display = 'flex';
+          letter.style.display = 'none';
+        }
+      });
+
+      closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+
+      participationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('eventId').value;
+        const name = document.getElementById('participantName').value;
+        const email = document.getElementById('participantEmail').value;
+        const phone = document.getElementById('participantPhone').value;
+        // Save
+        const map = JSON.parse(localStorage.getItem('eventRegistrations') || '{}');
+        if (!map[id]) map[id] = [];
+        map[id].push({ name, email, phone, at: new Date().toLocaleString() });
+        localStorage.setItem('eventRegistrations', JSON.stringify(map));
+        renderEvents();
+
+        // Confirmation letter
+        const ev = getEvents().find(x => x.id === id) || {};
+        const text = `Confirmation de participation\n\nNom: ${name}\nE-mail: ${email}\nTéléphone: ${phone || '-'}\n\nÉvénement: ${ev.title || ''}\nDate/Lieu: ${ev.date || ''} — ${ev.location || ''}\n\nNous confirmons votre inscription. Présentez cette lettre lors de l’événement.`;
+        letterContent.textContent = text;
+        letter.style.display = 'block';
+        alert('✅ Inscription confirmée');
+      });
+
+      printLetter.addEventListener('click', function() {
+        window.print();
+      });
+    });
+  </script>
+</body>
+</html>

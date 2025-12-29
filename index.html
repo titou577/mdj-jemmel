@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maison des Jeunes Jemmel</title>
+  <meta name="description" content="Maison des Jeunes Jemmel à Monastir, Tunisie — أنشطة، أخبار، تواصل ومعارض للشباب.">
+  <meta name="keywords" content="Maison des Jeunes, Jemmel, Monastir, Tunisie, شباب, أنشطة, ثقافة, رياضة">
+  <link rel="canonical" href="https://mdj-jemmel-prod.web.app/">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d3b66">
+  <link rel="apple-touch-icon" href="img/logo.png">
+  <meta property="og:title" content="Maison des Jeunes Jemmel">
+  <meta property="og:description" content="أنشطة، أخبار وتواصل للشباب في جمّال — ولاية المنستير.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mdj-jemmel-prod.web.app/">
+  <meta property="og:image" content="https://mdj-jemmel-prod.web.app/img/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Maison des Jeunes Jemmel">
+  <meta name="twitter:description" content="منصة شبابية للأنشطة والأخبار والتواصل في جمّال.">
+  <meta name="twitter:image" content="https://mdj-jemmel-prod.web.app/img/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Maison des Jeunes Jemmel",
+    "url": "https://mdj-jemmel-prod.web.app/",
+    "logo": "https://mdj-jemmel-prod.web.app/img/logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Jemmel",
+      "addressRegion": "Monastir",
+      "addressCountry": "TN"
+    }
+  }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0d3b66;
+      --secondary: #1b998b;
+      --light: #f8fafc;
+      --gray: #475569;
+      --light-gray: #e2e8f0;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--gray);
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* --- شريط التنقل مع شعار --- */
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.6rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .auth-display {
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(13,59,102,0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-left: 1rem;
+    }
+    .logout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(13,59,102,0.25); }
+
+    /* --- باقي التصميم --- */
+    .dashboard {
+      max-width: 1400px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .news-section,
+    .main-grid {
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+      transition: all 0.3s;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .news-content {
+      padding: 1.5rem;
+    }
+
+    .news-date {
+      display: inline-block;
+      background: rgba(13, 59, 102, 0.08);
+      color: var(--primary);
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+    }
+
+    .news-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .edit { background: #dbeafe; color: #1d4ed8; }
+    .edit:hover { background: #bfdbfe; }
+    .delete { background: #fee2e2; color: #dc2626; }
+    .delete:hover { background: #fecaca; }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.8rem;
+    }
+
+    .admin-dashboard {
+      background: white;
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+      display: none;
+    }
+
+    .admin-dashboard.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .stat-card {
+      background: rgba(27, 153, 139, 0.08);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #0d3b66;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+
+    @media (max-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.09;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Ensure content sits above watermark */
+    .header-bar, .dashboard, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">Se connecter</li>
+      </ul>
+    </nav>
+    <button id="logoutMainBtn" class="logout-btn" style="display:none;">Se déconnecter</button>
+  </div>
+
+  <div class="dashboard">
+    <section class="news-section">
+      <div class="section-header">
+        <h2 class="section-title">📰 Actualités récentes</h2>
+        <button id="addNewsBtn" class="action-btn edit" style="display:none;">+ Ajouter</button>
+      </div>
+      <div class="news-grid" id="newsContainer">
+        <div class="news-card">
+          <div class="news-content">
+            <span class="news-date">29 déc. 2025</span>
+            <h3>Lancement de "Radio Jemmel"</h3>
+            <p>Notre radio jeunesse démarre ses émissions hebdomadaires.</p>
+            <div class="actions">
+              <button class="action-btn edit">✏️ Modifier</button>
+              <button class="action-btn delete">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-content">
+            <span class="news-date">25 déc. 2025</span>
+            <h3>Festival régional de théâtre</h3>
+            <p>Notre troupe remporte le prix du meilleur spectacle.</p>
+            <div class="actions">
+              <button class="action-btn edit">✏️ Modifier</button>
+              <button class="action-btn delete">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <div>
+        <section id="adminPanel" class="admin-dashboard">
+          <h3 style="font-family: 'Montserrat', sans-serif; color:var(--primary); margin-bottom:1rem;">🛠️ Outils d'administration</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">127</div>
+              <div class="stat-label">Utilisateurs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">42</div>
+              <div class="stat-label">Commentaires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Vidéos</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="admin-dashboard">
+        <h3 style="font-family: 'Montserrat', sans-serif; color:var(--primary); margin-bottom:1rem;">🚀 Actions rapides</h3>
+        <div class="actions" style="flex-direction:column; gap:0.8rem;">
+          <button class="action-btn edit" style="width:100%; text-align:left;">📸 Ajouter une photo</button>
+          <button class="action-btn edit" style="width:100%; text-align:left;">🎥 Ajouter une vidéo</button>
+          <button class="action-btn edit" style="width:100%; text-align:left;">📊 Générer un rapport</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js').catch(function(err){
+          console.error('SW registration failed:', err);
+        });
+      });
+    }
+
+    // عند التحميل: تحقق من وجود مستخدم
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      const adminPanel = document.getElementById('adminPanel');
+      const addNewsBtn = document.getElementById('addNewsBtn');
+
+      if (user) {
+        const userData = JSON.parse(user);
+        // Dropdown profil + déconnexion
+        authDisplay.innerHTML = `
+          <button id="userBtn" style="background:none; border:none; font-weight:600; color:#0d3b66; cursor:pointer; display:flex; align-items:center; gap:0.5rem;">
+            <span>${userData.name}</span>
+            ${userData.role === 'admin' ? '<span>⚙️</span>' : ''}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div id="userMenu" class="dropdown-menu">
+            <a href="profile.html">👤 Mon profil</a>
+            <a href="#" id="logoutBtn">🚪 Déconnexion</a>
+          </div>
+        `;
+
+        // فتح/إغلاق القائمة
+        document.getElementById('userBtn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.getElementById('userMenu').classList.toggle('show');
+        });
+        document.addEventListener('click', function(e) {
+          const menu = document.getElementById('userMenu');
+          if (menu && !menu.contains(e.target) && e.target.id !== 'userBtn') {
+            menu.classList.remove('show');
+          }
+        });
+
+        // إظهار أدوات المدير
+        if (userData.role === 'admin') {
+          adminPanel.classList.add('active');
+          addNewsBtn.style.display = 'inline-block';
+        }
+
+        // خروج
+        const logoutEl = document.getElementById('logoutBtn');
+        const logoutMainBtn = document.getElementById('logoutMainBtn');
+        if (logoutMainBtn) {
+          logoutMainBtn.style.display = 'inline-block';
+          logoutMainBtn.onclick = function() {
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          };
+        }
+        if (logoutEl) {
+          logoutEl.onclick = function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          };
+        }
+      } else {
+        // إذا ما كانش مسجل، نوجه لـ login.html
+        setTimeout(() => {
+          if (confirm('Veuillez vous connecter pour accéder au site.')) {
+            window.location.href = 'login.html';
+          }
+        }, 1000);
+      }
+    });
+
+    // حذف خبر
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('delete')) {
+        if (confirm('Voulez-vous supprimer cette actualité ?')) {
+          e.target.closest('.news-card').remove();
+          alert('✅ Actualité supprimée');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0d3b66; --secondary: #1b998b; --light: #f8fafc; --gray: #475569; --light-gray: #e2e8f0; }
+    body { background: var(--light); color: var(--gray); font-family: 'Open Sans', sans-serif; line-height: 1.6; }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+    
+    nav ul { display: flex; list-style: none; gap: 1.6rem; }
+    nav a { text-decoration: none; color: var(--gray); font-weight: 500; }
+    
+    .auth-display { font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      overflow: hidden;
+      min-width: 200px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+    }
+    
+    .dropdown-menu a {
+      display: block;
+      padding: 0.85rem 1.2rem;
+      color: #1e293b;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    
+    .dropdown-menu a:hover { background: #f8fafc; }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    
+    main { max-width: 1000px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    h1 { font-family: 'Montserrat', sans-serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 2rem; text-align: center; }
+    
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2.5rem; }
+    
+    .contact-info, .contact-form {
+      background: white;
+      border-radius: 12px;
+      padding: 2.2rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+    }
+    
+    .contact-info h2, .contact-form h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+    }
+    
+    .contact-item { display: flex; align-items: center; margin-bottom: 1.1rem; }
+    .contact-icon { width: 40px; height: 40px; background: rgba(13, 59, 102, 0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: var(--primary); }
+    .contact-text a { color: var(--primary); text-decoration: none; }
+    .contact-text a:hover { text-decoration: underline; }
+    
+    input, textarea, button {
+      width: 100%;
+      padding: 0.85rem;
+      margin-bottom: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13, 59, 102, 0.2); }
+    
+    .map-container { margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    
+    footer { text-align: center; padding: 2rem 0 3rem; color: #0d3b66; font-size: 1.05rem; font-weight: 600; border-top: 1px solid var(--light-gray); margin-top: 3rem; background: rgba(255, 255, 255, 0.75); backdrop-filter: saturate(1.2) blur(2px); }
+    
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Ensure content sits above watermark */
+    .header-bar, main, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">
+          <span>Se connecter</span>
+        </li>
+      </ul>
+    </nav>
+    <button id="logoutMainBtn" class="logout-btn" style="display:none;">Se déconnecter</button>
+  </div>
+
+  <main>
+    <h1>Nous contacter</h1>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Coordonnées</h2>
+        
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text">Jemmel, Monastir, Tunisie</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-text"><a href="tel:+21673123456">+216 73 123 456</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-text"><a href="mailto:contact@mdj-jemmel.tn">contact@mdj-jemmel.tn</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-text">
+            <a href="https://www.facebook.com/share/17i7Ff74iU/?mibextid=wwXIfr" target="_blank">Facebook</a>
+          </div>
+        </div>
+
+        <div class="map-container">
+          <iframe 
+            src="https://www.google.com/maps?q=Maison%20de%20Jeunesse%20de%20Jemmel&output=embed" 
+            width="100%" 
+            height="300" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+          <div style="margin-top:0.8rem; text-align:right;">
+            <a href="https://maps.app.goo.gl/os2gRd37rr8ohXzL6" target="_blank" style="color:#0d3b66; font-weight:600; text-decoration:none;">📍 Ouvrir dans Google Maps</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h2>Formulaire de contact</h2>
+        <form>
+          <input type="text" placeholder="Nom complet" required>
+          <input type="email" placeholder="Adresse e-mail" required>
+          <textarea rows="4" placeholder="Votre message" required></textarea>
+          <button type="submit">Envoyer le message</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    // عند التحميل: تحقق من وجود مستخدم
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      
+      if (user) {
+        const userData = JSON.parse(user);
+        authDisplay.innerHTML = `
+          <button id="userBtn" style="background:none; border:none; font-weight:600; color:#0d3b66; cursor:pointer; display:flex; align-items:center; gap:0.5rem;">
+            <span>${userData.name}</span>
+            ${userData.role === 'admin' ? '<span>⚙️</span>' : ''}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div id="userMenu" class="dropdown-menu">
+            <a href="profile.html">👤 Mon profil</a>
+            <a href="#" id="logoutBtn">🚪 Déconnexion</a>
+          </div>
+        `;
+        
+        // فتح/إغلاق القائمة
+        document.getElementById('userBtn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.getElementById('userMenu').classList.toggle('show');
+        });
+        
+        // إغلاق عند الضغط خارج
+        document.addEventListener('click', function(e) {
+          const menu = document.getElementById('userMenu');
+          if (!menu.contains(e.target) && e.target.id !== 'userBtn') {
+            menu.classList.remove('show');
+          }
+        });
+        
+        // خروج
+        const logoutAnchor = document.getElementById('logoutBtn');
+        const logoutMainBtn = document.getElementById('logoutMainBtn');
+        if (logoutMainBtn) {
+          logoutMainBtn.style.display = 'inline-block';
+          logoutMainBtn.addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          });
+        }
+        if (logoutAnchor) {
+          logoutAnchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

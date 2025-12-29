@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À propos — Maison des Jeunes Jemmel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0d3b66; --secondary: #1b998b; --light: #f8fafc; --gray: #475569; --light-gray: #e2e8f0; }
+    body { background: var(--light); color: var(--gray); font-family: 'Open Sans', sans-serif; line-height: 1.6; }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    
+    .logo::before {
+      content: '';
+      width: 28px;
+      height: 28px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 5px;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(30, 144, 255, 0.4);
+    }
+    
+    nav ul { display: flex; list-style: none; gap: 1.6rem; }
+    nav a { text-decoration: none; color: var(--gray); font-weight: 500; }
+    
+    .auth-display { font-weight: 600; color: var(--primary); }
+    
+    main { max-width: 900px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.4rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 2.2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+      position: relative;
+    }
+    
+    .admin-actions {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      display: none;
+    }
+    
+    .admin-actions.active { display: block; }
+    
+    .action-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 0.5rem;
+    }
+    
+    .edit { background: #dbeafe; color: #1d4ed8; }
+    .edit:hover { background: #bfdbfe; }
+    .delete { background: #fee2e2; color: #dc2626; }
+    .delete:hover { background: #fecaca; }
+    
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin: 1.2rem 0 0.8rem;
+    }
+    
+    ul { padding-right: 1.5rem; margin: 1rem 0; }
+    li { margin-bottom: 0.6rem; }
+    
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      color: var(--gray);
+      font-size: 1.05rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #64748b;
+      font-size: 0.95rem;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">Se connecter</li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="admin-actions" id="aboutActions">
+        <button class="action-btn edit">✏️ Modifier</button>
+        <button class="action-btn delete">🗑️ Supprimer</button>
+      </div>
+      
+      <h1>À propos de la Maison des Jeunes Jemmel</h1>
+      
+      <h2>Notre mission</h2>
+      <p>Depuis 1986, la Maison des Jeunes de Jemmel accompagne les jeunes dans leur développement personnel, citoyen et professionnel, en leur offrant un espace sécurisé d’expression, de création et d’engagement.</p>
+
+      <h2>Valeurs fondatrices</h2>
+      <ul>
+        <li>✅ Inclusion et diversité</li>
+        <li>✅ Innovation et créativité</li>
+        <li>✅ Citoyenneté active</li>
+        <li>✅ Excellence dans l’accompagnement</li>
+      </ul>
+
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">1986</div>
+          <div class="stat-label">Année de création</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Régions partenaires</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">300+</div>
+          <div class="stat-label">Jeunes accompagnés/an</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      const actions = document.getElementById('aboutActions');
+      
+      if (user) {
+        const userData = JSON.parse(user);
+        authDisplay.innerHTML = `<span>${userData.name}</span>${userData.role === 'admin' ? ' ⚙️' : ''}`;
+        
+        // إظهار أدوات المدير
+        if (userData.role === 'admin') {
+          actions.style.display = 'block';
+        }
+      }
+      
+      // حذف الصفحة
+      document.querySelector('.delete').addEventListener('click', function() {
+        if (confirm('⚠️ Supprimer toute la page "À propos" ?\n(Cette action est irréversible)')) {
+          alert('✅ Page supprimée');
+          // في الواقع: نرسل طلب لـ backend
+        }
+      });
+    });
+  </script>
+</body>
+</html>

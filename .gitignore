@@ -1,0 +1,4 @@
+# مجلدات لا نريدها في GitHub
+node_modules/
+.vscode/
+uploads/

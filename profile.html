@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mon profil — Maison des Jeunes Jemmal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0d3b66; --secondary: #1b998b; --light: #f8fafc; --gray: #475569; --light-gray: #e2e8f0; }
+    body { background: var(--light); color: var(--gray); font-family: 'Open Sans', sans-serif; }
+    
+    .header-bar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 1.1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    
+    .logo::before {
+      content: '';
+      width: 56px;
+      height: 56px;
+      background: url('img/logo.png') center/cover;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(13, 59, 102, 0.35);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+    
+    nav ul { display: flex; list-style: none; gap: 1.6rem; }
+    nav a { text-decoration: none; color: var(--gray); font-weight: 500; }
+    
+    .auth-display { font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+
+    .logout-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(13,59,102,0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-left: 1rem;
+    }
+    .logout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(13,59,102,0.25); }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      overflow: hidden;
+      min-width: 200px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+    }
+    
+    .dropdown-menu a {
+      display: block;
+      padding: 0.85rem 1.2rem;
+      color: #1e293b;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    
+    .dropdown-menu a:hover { background: #f8fafc; }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    
+    main { max-width: 800px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .profile-pic-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+    }
+    
+    #profilePic {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--light-gray);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .upload-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(27, 153, 139, 0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      border: 4px solid white;
+    }
+    
+    .profile-pic-container:hover .upload-overlay {
+      opacity: 1;
+    }
+    
+    #fileInput { display: none; }
+    
+    .profile-info h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .profile-info p { color: var(--gray); margin-bottom: 0.3rem; }
+    
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--light-gray);
+    }
+    
+    .section h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+    }
+    
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155; }
+    input, select, textarea { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; }
+    
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn:hover { transform: translateY(-2px); }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: #0d3b66;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+    
+    /* Subtle site-wide watermark overlay */
+    .site-watermark {
+      position: fixed;
+      inset: 0;
+      background: url('img/logo.png') center / clamp(360px, 50vw, 720px) no-repeat;
+      opacity: 0.09;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Ensure content sits above watermark */
+    .header-bar, main, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="site-watermark"></div>
+  <div class="header-bar">
+    <div class="logo">Maison des Jeunes Jemmel</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="activities.html">Activités</a></li>
+        <li><a href="news.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="authDisplay" class="auth-display">
+          <span>Se connecter</span>
+        </li>
+      </ul>
+    </nav>
+    <button id="logoutMainBtn" class="logout-btn" style="display:none;">Se déconnecter</button>
+  </div>
+
+  <main>
+    <div class="profile-header">
+      <div class="profile-pic-container">
+        <img id="profilePic" src="https://via.placeholder.com/150/0d3b66/FFFFFF?text=MJ" alt="Photo de profil">
+        <div class="upload-overlay" onclick="document.getElementById('fileInput').click()">✎</div>
+        <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(event)">
+      </div>
+      <div class="profile-info">
+        <h1 id="profileName">Mohamed Jemli</h1>
+        <p id="profileRole">Participant</p>
+        <p>mohamed.jemli@email.tn</p>
+        <p>Membre depuis: Janvier 2025</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2>Modifier mes informations</h2>
+      <form id="profileForm">
+        <div class="row">
+          <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" value="Mohamed Jemli">
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" value="mohamed.jemli@email.tn">
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="dob">Date de naissance</label>
+            <input type="date" id="dob" value="2005-03-15">
+          </div>
+          <div class="form-group">
+            <label for="wilaya">Wilaya</label>
+            <select id="wilaya">
+              <option value="Monastir">Monastir</option>
+              <option value="Tunis">Tunis</option>
+              <option value="Ben Arous">Ben Arous</option>
+              <option value="Ariana">Ariana</option>
+              <option value="Manouba">Manouba</option>
+              <option value="Nabeul">Nabeul</option>
+              <option value="Zaghouan">Zaghouan</option>
+              <option value="Bizerte">Bizerte</option>
+              <option value="Béja">Béja</option>
+              <option value="Jendouba">Jendouba</option>
+              <option value="Kef">Kef</option>
+              <option value="Siliana">Siliana</option>
+              <option value="Sousse">Sousse</option>
+              <option value="Mahdia">Mahdia</option>
+              <option value="Sfax">Sfax</option>
+              <option value="Kairouan">Kairouan</option>
+              <option value="Kasserine">Kasserine</option>
+              <option value="Sidi Bouzid">Sidi Bouzid</option>
+              <option value="Gafsa">Gafsa</option>
+              <option value="Tozeur">Tozeur</option>
+              <option value="Gabès">Gabès</option>
+              <option value="Medenine">Medenine</option>
+              <option value="Tataouine">Tataouine</option>
+              <option value="Kebili">Kebili</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Adresse complète</label>
+          <textarea id="address" rows="2">Rue de la Jeunesse, Jemmel</textarea>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="tel" id="phone" value="+216 98 765 432">
+          </div>
+          <div class="form-group">
+            <label for="school">Établissement</label>
+            <input type="text" id="school" value="Lycée Jemmel">
+          </div>
+        </div>
+        
+        <div class="form-group" id="posteGroup" style="display:none;">
+          <label for="poste">Poste (Administrateurs)</label>
+          <select id="poste">
+            <option>Directeur</option>
+            <option>Enseignant</option>
+            <option>Remplaçant directeur</option>
+            <option>Secrétaire</option>
+            <option>Responsable activités</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn">Enregistrer les modifications</button>
+      </form>
+    </section>
+
+    <section class="section">
+      <h2>Sécurité du compte</h2>
+      <form id="passwordForm">
+        <div class="row">
+          <div class="form-group">
+            <label for="currentPassword">Mot de passe actuel</label>
+            <input type="password" id="currentPassword" placeholder="••••••">
+            <small id="currentPwdHint" style="color:#64748b; display:block; margin-top:0.4rem;">Si vous n'avez pas encore défini un mot de passe, laissez ce champ vide.</small>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Nouveau mot de passe</label>
+            <input type="password" id="newPassword" placeholder="Au moins 6 caractères">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+          <input type="password" id="confirmPassword" placeholder="Confirmez le mot de passe">
+        </div>
+        <button type="submit" class="btn">Mettre à jour le mot de passe</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Maison des Jeunes Jemmel — Monastir, Tunisie
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('currentUser');
+      if (user) {
+        const logoutMainBtn = document.getElementById('logoutMainBtn');
+        if (logoutMainBtn) {
+          logoutMainBtn.style.display = 'inline-block';
+          logoutMainBtn.addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            alert('✅ Déconnexion réussie');
+            window.location.reload();
+          });
+        }
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Normaliser la liste des wilayas (24 gouvernorats) dans le profil
+      const wilayas = [
+        'Tunis','Ariana','Ben Arous','Manouba','Nabeul','Zaghouan','Bizerte','Béja','Jendouba','Le Kef','Siliana','Sousse','Monastir','Mahdia','Sfax','Kairouan','Kasserine','Sidi Bouzid','Gabès','Medenine','Tataouine','Gafsa','Tozeur','Kebili'
+      ];
+      const wilayaSelect = document.getElementById('wilaya');
+      if (wilayaSelect) {
+        const current = wilayaSelect.value;
+        wilayaSelect.innerHTML = '<option value="">Sélectionnez votre Wilaya</option>' +
+          wilayas.map(w => `<option value="${w}">${w}</option>`).join('');
+        // restaurer l'ancienne valeur si elle existait
+        if (current) {
+          wilayaSelect.value = current;
+        }
+      }
+      const user = localStorage.getItem('currentUser');
+      const authDisplay = document.getElementById('authDisplay');
+      
+      // حماية الصفحة: يلزم تسجيل الدخول
+      if (!user) {
+        alert('Veuillez vous connecter pour accéder à votre profil.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if (user) {
+        const userData = JSON.parse(user);
+        
+        // عرض المعلومات
+        document.getElementById('profileName').textContent = userData.name || 'Utilisateur';
+        document.getElementById('profileRole').textContent = userData.role === 'admin' ? 'Administrateur' : 'Participant';
+        
+        // ملء النموذج
+        document.getElementById('fullName').value = userData.name || '';
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('phone').value = userData.phone || '';
+        document.getElementById('address').value = userData.address || '';
+        document.getElementById('school').value = userData.school || '';
+        document.getElementById('wilaya').value = userData.wilaya || 'Monastir';
+        
+        // إظهار حقل المنصب للمدراء
+        if (userData.role === 'admin') {
+          document.getElementById('posteGroup').style.display = 'block';
+          document.getElementById('poste').value = userData.poste || 'Directeur';
+        }
+        
+        // عرض الصورة المحفوظة
+        const savedPic = localStorage.getItem('userProfilePic');
+        if (savedPic) {
+          document.getElementById('profilePic').src = savedPic;
+        }
+        
+        // قائمة المستخدم
+        authDisplay.innerHTML = `
+          <button id="userBtn" style="background:none; border:none; font-weight:600; color:#0d3b66; cursor:pointer; display:flex; align-items:center; gap:0.5rem;">
+            <span>${userData.name}</span>
+            ${userData.role === 'admin' ? '<span>⚙️</span>' : ''}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div id="userMenu" class="dropdown-menu">
+            <a href="profile.html">👤 Mon profil</a>
+            <a href="#" id="logoutBtn">🚪 Déconnexion</a>
+          </div>
+        `;
+        
+        // فتح/إغلاق القائمة
+        document.getElementById('userBtn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.getElementById('userMenu').classList.toggle('show');
+        });
+        
+        // إغلاق عند الضغط خارج
+        document.addEventListener('click', function(e) {
+          const menu = document.getElementById('userMenu');
+          if (!menu.contains(e.target) && e.target.id !== 'userBtn') {
+            menu.classList.remove('show');
+          }
+        });
+        
+        // خروج
+        document.getElementById('logoutBtn').onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('currentUser');
+          alert('✅ Déconnexion réussie');
+          window.location.href = 'index.html';
+        };
+      }
+    });
+
+    // رفع الصورة
+    function uploadImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('profilePic').src = e.target.result;
+        localStorage.setItem('userProfilePic', e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // حفظ التعديلات
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      user.name = document.getElementById('fullName').value;
+      user.email = document.getElementById('email').value;
+      user.phone = document.getElementById('phone').value;
+      user.address = document.getElementById('address').value;
+      user.school = document.getElementById('school').value;
+      user.wilaya = document.getElementById('wilaya').value;
+      
+      if (user.role === 'admin') {
+        user.poste = document.getElementById('poste').value;
+      }
+      
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      
+      // تحديث العرض
+      document.getElementById('profileName').textContent = user.name;
+      document.getElementById('profileRole').textContent = user.role === 'admin' ? 'Administrateur' : 'Participant';
+      
+      alert('✅ Informations mises à jour avec succès !');
+    });
+
+    // تغيير كلمة السر
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const stored = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const current = document.getElementById('currentPassword').value;
+      const next = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      // التحقق من كلمة السر الحالية إذا موجودة
+      if (stored.password) {
+        if (!current) {
+          alert('⚠️ Veuillez saisir votre mot de passe actuel.');
+          return;
+        }
+        if (current !== stored.password) {
+          alert('❌ Mot de passe actuel incorrect.');
+          return;
+        }
+      }
+
+      // شروط كلمة السر الجديدة
+      if (!next || next.length < 6) {
+        alert('⚠️ Le nouveau mot de passe doit contenir au moins 6 caractères.');
+        return;
+      }
+      if (next !== confirm) {
+        alert('❌ La confirmation ne correspond pas.');
+        return;
+      }
+
+      stored.password = next;
+      localStorage.setItem('currentUser', JSON.stringify(stored));
+      alert('✅ Mot de passe mis à jour avec succès !');
+      document.getElementById('currentPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+    });
+  </script>
+</body>
+</html>

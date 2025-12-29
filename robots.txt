@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mdj-jemmel-prod.web.app/sitemap.xml
