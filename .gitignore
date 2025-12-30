@@ -1,4 +1,18 @@
-# مجلدات لا نريدها في GitHub
+# مجلدات وملفات لا نريدها في GitHub
 node_modules/
 .vscode/
 uploads/
+
+# Python/Flask
+backend/__pycache__/
+backend/*.pyc
+backend/.venv/
+backend/venv/
+backend/env/
+backend/.python-version
+backend/*.log
+backend/data.db
+
+# عام
+.DS_Store
+Thumbs.db
