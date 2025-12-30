@@ -39,6 +39,10 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           install_components: 'beta,alpha'
 
+      - name: Enable required APIs
+        run: |
+          gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+
       - name: Deploy to Cloud Run from source
         uses: google-github-actions/deploy-cloudrun@v2
         with:
