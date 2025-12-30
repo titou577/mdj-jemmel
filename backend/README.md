@@ -56,6 +56,9 @@ Deploy steps
    - Frontend: `https://<your-firebase-app>.web.app/`
    - Health via Hosting proxy: `https://<your-firebase-app>.web.app/api/health`
 
+Note
+- Any change under `backend/**` or `.github/workflows/cloud-run.yml` will trigger the Cloud Run deployment workflow.
+
 Important
 - Do NOT commit Service Account JSON files to the repo. Keep them only in GitHub Secrets.
 - SQLite in Cloud Run is ephemeral; for persistence, use Cloud SQL (Postgres/MySQL) or Firestore.
